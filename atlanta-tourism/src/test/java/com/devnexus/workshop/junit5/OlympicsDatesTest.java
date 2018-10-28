@@ -22,7 +22,8 @@ public class OlympicsDatesTest {
 	@Parameters(name="{0}")
 	public static Collection<Object[]> testCases() throws IOException {
 		Path path = Paths.get("src/test/resources", "olympics-tests.txt");
-		return Files.lines(path)
+		try (Stream<String> stream = Files.lines(path)) {
+		return stream
 				// remove blank and commented out lines
 				.filter(l -> ! l.isEmpty())
 				.filter(l -> ! l.startsWith("#"))
@@ -32,6 +33,7 @@ public class OlympicsDatesTest {
 				.map(a -> new Object[] { LocalDate.parse(a[0]), Boolean.parseBoolean(a[1])} )
 				// store in collection
 				.collect(Collectors.toList());
+		}
 	}
 	
 	@Test
